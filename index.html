@@ -16,8 +16,21 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:13px}
 
+/* ── Lock screen ── */
+#lock{position:fixed;inset:0;background:linear-gradient(160deg,#1f4e78 0%,#0e1c2e 100%);z-index:1000;display:flex;align-items:center;justify-content:center}
+#lock .box{background:#fff;border-radius:12px;padding:36px 40px;width:340px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.4);text-align:center}
+#lock h2{font-size:16px;color:var(--navy);margin-bottom:4px}
+#lock .sub{font-size:11px;color:var(--mut);font-family:var(--mono);margin-bottom:22px}
+#lock input{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:8px;font-size:14px;margin-bottom:12px;text-align:center;letter-spacing:1px}
+#lock input:focus{outline:none;border-color:var(--navy-lt);box-shadow:0 0 0 3px rgba(46,117,182,.15)}
+#lock button{width:100%;padding:11px;border:none;border-radius:8px;background:var(--navy);color:#fff;font-size:14px;font-weight:600;cursor:pointer}
+#lock button:hover{background:var(--navy-lt)}
+#lock .err{color:var(--err);font-size:11px;margin-top:10px;min-height:14px}
+#lock .icon{font-size:34px;margin-bottom:12px}
+body.locked>*:not(#lock){display:none!important}
+
 header{background:var(--navy);color:#fff;padding:10px 18px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:50;flex-wrap:wrap}
-header h1{font-size:15px;font-weight:600}
+header h1{font-size:15px;font-weight:600;cursor:default;user-select:none}
 header .proj{font-family:var(--mono);font-size:10px;opacity:.75}
 .floor-tabs{display:flex;gap:4px;flex-wrap:wrap}
 .ftab{padding:5px 12px;border-radius:5px;background:rgba(255,255,255,.12);cursor:pointer;font-size:12px;font-weight:600;border:1px solid transparent;transition:.15s;color:#fff}
@@ -37,7 +50,6 @@ header .proj{font-family:var(--mono);font-size:10px;opacity:.75}
 
 main{padding:14px 18px 70px}
 
-/* ── Collapsible sections ── */
 .sect-block{margin-bottom:14px;border-radius:6px;overflow:hidden;box-shadow:0 1px 3px rgba(14,28,46,.06)}
 .sect-hdr{background:var(--navy-lt);color:#fff;padding:8px 12px;font-weight:600;font-size:13px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
 .sect-hdr:hover{background:#3a80c2}
@@ -45,7 +57,6 @@ main{padding:14px 18px 70px}
 .sect-hdr.closed .car{transform:rotate(-90deg)}
 .sect-hdr .lft{display:flex;align-items:center}
 .sect-hdr .prog{font-family:var(--mono);font-size:11px;opacity:.9}
-.sect-body{background:var(--card)}
 .sect-body.hidden{display:none}
 .inc-hdr{background:#dcebf7;padding:5px 12px;font-weight:600;font-size:12px;color:var(--navy);border-left:3px solid var(--navy-lt);display:flex;justify-content:space-between;cursor:pointer;user-select:none}
 .inc-hdr:hover{background:#d0e4f4}
@@ -53,7 +64,7 @@ main{padding:14px 18px 70px}
 .inc-body.hidden{display:none}
 
 table{width:100%;border-collapse:collapse;background:var(--card)}
-th{background:#eef2f7;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--mut);padding:5px 8px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{background:#eef2f7;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--mut);padding:5px 8px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap;user-select:none}
 td{padding:5px 8px;border-bottom:1px solid #edf1f5;vertical-align:middle;font-size:12.5px}
 tr:hover td{filter:brightness(.98)}
 tr.st-ok td{background:var(--row-ok)}
@@ -64,7 +75,6 @@ tr.st-px td{background:var(--row-px)}
 .den{font-weight:500}
 .buc{font-family:var(--mono);text-align:center}
 
-/* ── Editable Revit badge ── */
 .badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.3px;cursor:pointer;border:1px dashed transparent;transition:.12s;user-select:none}
 .badge:hover{border-color:currentColor;transform:scale(1.06)}
 .b-da{background:var(--da);color:#3a6b28}
@@ -75,7 +85,6 @@ tr.st-px td{background:var(--row-px)}
 
 .inst{font-size:10.5px;white-space:nowrap}
 .src{font-size:10px;white-space:nowrap}
-.rfi-flag{color:var(--err);font-size:13px}
 .fisa a{color:var(--navy-lt);font-size:10.5px;text-decoration:none}
 .fisa a:hover{text-decoration:underline}
 
@@ -94,6 +103,13 @@ tr.st-px td{background:var(--row-px)}
 .stx button.ck{background:var(--warn);border-color:var(--warn);color:#fff}
 .stx button.px{background:var(--err);border-color:var(--err);color:#fff}
 
+/* ── RFI cell — clickable toggle ── */
+.rfi-cell{cursor:pointer;text-align:center;min-width:30px;border-radius:4px;transition:.12s;user-select:none}
+.rfi-cell:hover{background:rgba(192,57,43,.08)}
+.rfi-on{color:var(--err);font-size:13px}
+.rfi-off{color:#d5dce4;font-size:12px}
+.rfi-cell .mod-dot{font-size:7px;vertical-align:top;color:var(--navy-lt)}
+
 .pbar{height:4px;background:rgba(255,255,255,.25);border-radius:2px;width:100px;overflow:hidden}
 .pbar i{display:block;height:100%;background:#7fd49a;border-radius:2px;transition:.3s}
 
@@ -102,7 +118,6 @@ tr.st-px td{background:var(--row-px)}
 .abtn{padding:7px 14px;border-radius:6px;border:1px solid var(--navy);background:var(--navy);color:#fff;cursor:pointer;font-size:12px;font-weight:600}
 .abtn.sec{background:var(--card);color:var(--navy)}
 .abtn:hover{opacity:.9}
-
 .expand-all{font-size:11px;color:var(--navy-lt);cursor:pointer;text-decoration:underline;white-space:nowrap}
 
 @media(max-width:900px){
@@ -110,19 +125,6 @@ tr.st-px td{background:var(--row-px)}
   header h1{font-size:13px}
   .hdr-stats{margin-left:0}
 }
-
-/* ── Lock screen ── */
-#lock{position:fixed;inset:0;background:linear-gradient(160deg,#1f4e78 0%,#0e1c2e 100%);z-index:1000;display:flex;align-items:center;justify-content:center}
-#lock .box{background:#fff;border-radius:12px;padding:36px 40px;width:340px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.4);text-align:center}
-#lock h2{font-size:16px;color:var(--navy);margin-bottom:4px}
-#lock .sub{font-size:11px;color:var(--mut);font-family:var(--mono);margin-bottom:22px}
-#lock input{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:8px;font-size:14px;margin-bottom:12px;text-align:center;letter-spacing:1px}
-#lock input:focus{outline:none;border-color:var(--navy-lt);box-shadow:0 0 0 3px rgba(46,117,182,.15)}
-#lock button{width:100%;padding:11px;border:none;border-radius:8px;background:var(--navy);color:#fff;font-size:14px;font-weight:600;cursor:pointer}
-#lock button:hover{background:var(--navy-lt)}
-#lock .err{color:var(--err);font-size:11px;margin-top:10px;min-height:14px}
-#lock .icon{font-size:34px;margin-bottom:12px}
-body.locked>*:not(#lock){display:none!important}
 </style>
 </head>
 <body class="locked">
@@ -140,8 +142,8 @@ body.locked>*:not(#lock){display:none!important}
 
 <header>
   <div>
-    <h1>Dotări Medicale — Spital Brașov</h1>
-    <div class="proj">0040325_LEV_DB_SpitalBrasov · v2.0 · toate etajele</div>
+    <h1 id="appTitle">Dotări Medicale — Spital Brașov</h1>
+    <div class="proj">0040325_LEV_DB_SpitalBrasov · v2.1 · toate etajele</div>
   </div>
   <div class="floor-tabs" id="floorTabs"></div>
   <div class="hdr-stats" id="hdrStats"></div>
@@ -166,7 +168,7 @@ body.locked>*:not(#lock){display:none!important}
   <button class="abtn" onclick="exportJSON()">⬇ Backup JSON</button>
   <button class="abtn sec" onclick="importJSON()">⬆ Import</button>
   <button class="abtn sec" onclick="exportCSV()">⬇ Export CSV</button>
-  <span class="msg" id="saveMsg">Statusuri, notițe și Revit: salvare automată</span>
+  <span class="msg" id="saveMsg">Statusuri, notițe, Revit și RFI: salvare automată</span>
 </div>
 <input type="file" id="fileIn" accept=".json" style="display:none">
 
@@ -189,13 +191,10 @@ async function checkPw(){
 }
 function unlock(){
   document.body.classList.remove('locked');
-  document.getElementById('lock').remove();
+  const l=document.getElementById('lock'); if(l) l.remove();
 }
 try{ if(sessionStorage.getItem('sb-auth')==='1'){
-  window.addEventListener('DOMContentLoaded',()=>{ 
-    document.body.classList.remove('locked');
-    const l=document.getElementById('lock'); if(l) l.remove();
-  });
+  window.addEventListener('DOMContentLoaded',()=>unlock());
 }}catch(e){}
 </script>
 <script>
@@ -203,13 +202,14 @@ const ALL = {"ETAJ 4":[{"nr":1,"cod":"MED-001","sectie":"Pneumologie I Adulți",
 const FLOORS = Object.keys(ALL);
 
 /* ── Persistence ── */
-let ST={}, NOTES={}, RVOV={}, COLLAPSE={};
-const K_ST='sb-status-v2', K_NT='sb-notes-v2', K_RV='sb-revit-v2';
+let ST={}, NOTES={}, RVOV={}, RFIOV={}, COLLAPSE={};
+let SRC_HIDDEN=false;
+const K_ST='sb-status-v2', K_NT='sb-notes-v2', K_RV='sb-revit-v2', K_RF='sb-rfi-v2', K_UI='sb-ui-c7';
 const store={
   async get(k){
-    try{ if(window.storage){ const r=await window.storage.get(k); return r?JSON.parse(r.value):{} } }catch(e){}
-    try{ const v=localStorage.getItem(k); return v?JSON.parse(v):{} }catch(e){}
-    return {};
+    try{ if(window.storage){ const r=await window.storage.get(k); return r?JSON.parse(r.value):null } }catch(e){}
+    try{ const v=localStorage.getItem(k); return v?JSON.parse(v):null }catch(e){}
+    return null;
   },
   async set(k,o){
     try{ if(window.storage){ await window.storage.set(k,JSON.stringify(o)); return } }catch(e){}
@@ -226,20 +226,25 @@ function stOf(it){ return ST[it.nr]||'' }
 function noteOf(it){ return NOTES[it.nr]||'' }
 function revitOf(it){ return RVOV[it.nr]||it.revit }
 function isRevMod(it){ return RVOV[it.nr] && RVOV[it.nr]!==it.revit }
+function rfiOf(it){ return RFIOV[it.nr]!==undefined ? RFIOV[it.nr] : it.rfi }
+function isRfiMod(it){ return RFIOV[it.nr]!==undefined && RFIOV[it.nr]!==it.rfi }
 
 async function setSt(nr,val){
   if(val) ST[nr]=val; else delete ST[nr];
   await store.set(K_ST,ST); render();
 }
-
-/* Click badge → cycle DA→NU→VER→(original) */
-async function cycleRevit(nr, orig){
-  const cur = RVOV[nr]||orig;
-  const cyc = {'DA':'NU','NU':'VER','VER':'DA'};
-  const next = cyc[cur];
+async function cycleRevit(nr,orig){
+  const cur=RVOV[nr]||orig;
+  const cyc={'DA':'NU','NU':'VER','VER':'DA'};
+  const next=cyc[cur];
   if(next===orig) delete RVOV[nr]; else RVOV[nr]=next;
-  await store.set(K_RV,RVOV);
-  render();
+  await store.set(K_RV,RVOV); render();
+}
+async function toggleRfi(nr,orig){
+  const cur=RFIOV[nr]!==undefined?RFIOV[nr]:orig;
+  const next=!cur;
+  if(next===orig) delete RFIOV[nr]; else RFIOV[nr]=next;
+  await store.set(K_RF,RFIOV); render();
 }
 
 let noteTimer=null;
@@ -252,6 +257,26 @@ function onNote(nr,val){
   },500);
 }
 
+/* ── Secret: 7 taps pe titlu sau pe header-ul Sursă → toggle coloana Sursă ── */
+let taps=[];
+async function secretTap(){
+  const now=Date.now();
+  taps=taps.filter(t=>now-t<4000);
+  taps.push(now);
+  if(taps.length>=7){
+    taps=[];
+    SRC_HIDDEN=!SRC_HIDDEN;
+    await store.set(K_UI,{h:SRC_HIDDEN});
+    render();
+    const m=document.getElementById('saveMsg');
+    m.textContent=SRC_HIDDEN?'· · ·':'Coloana Sursă vizibilă';
+    setTimeout(()=>m.textContent='Statusuri, notițe, Revit și RFI: salvare automată',2500);
+  }
+}
+document.addEventListener('click',e=>{
+  if(e.target.closest('#appTitle')||e.target.closest('th.src-th')) secretTap();
+});
+
 function match(it){
   if(q){
     const s=(it.den+' '+it.cod+' '+it.furn+' '+it.obs+' '+noteOf(it)).toLowerCase();
@@ -259,7 +284,7 @@ function match(it){
   }
   for(const f of filters){
     if(f.startsWith('revit:') && revitOf(it)!==f.split(':')[1]) return false;
-    if(f==='rfi' && !it.rfi) return false;
+    if(f==='rfi' && !rfiOf(it)) return false;
     if(f==='inst' && !it.inst) return false;
     if(f==='st:todo' && stOf(it)) return false;
     if(f==='note' && !noteOf(it)) return false;
@@ -271,8 +296,8 @@ function match(it){
 function toggleSect(id){
   COLLAPSE[id]=!COLLAPSE[id];
   const b=document.getElementById('b-'+id), h=document.getElementById('h-'+id);
-  if(b){ b.classList.toggle('hidden', COLLAPSE[id]) }
-  if(h){ h.classList.toggle('closed', COLLAPSE[id]) }
+  if(b) b.classList.toggle('hidden',COLLAPSE[id]);
+  if(h) h.classList.toggle('closed',COLLAPSE[id]);
 }
 let allCollapsed=false;
 function toggleAll(){
@@ -283,7 +308,6 @@ function toggleAll(){
 }
 
 function render(){
-  /* floor tabs */
   document.getElementById('floorTabs').innerHTML = FLOORS.map(f=>
     `<div class="ftab ${f===curFloor?'on':''}" onclick="selFloor('${f}')">${f}<span style="font-size:9px;opacity:.7;margin-left:4px">${ALL[f].length}</span></div>`
   ).join('');
@@ -291,7 +315,6 @@ function render(){
   const D=items();
   const flt=D.filter(match);
 
-  /* header stats for current floor */
   const all=D.length;
   const done=D.filter(it=>stOf(it)==='ok').length;
   const ck=D.filter(it=>stOf(it)==='ck').length;
@@ -307,19 +330,20 @@ function render(){
   document.getElementById('nDA').textContent=D.filter(i=>revitOf(i)==='DA').length;
   document.getElementById('nNU').textContent=D.filter(i=>revitOf(i)==='NU').length;
   document.getElementById('nVER').textContent=D.filter(i=>revitOf(i)==='VER').length;
-  document.getElementById('nRFI').textContent=D.filter(i=>i.rfi).length;
+  document.getElementById('nRFI').textContent=D.filter(i=>rfiOf(i)).length;
   document.getElementById('nINST').textContent=D.filter(i=>i.inst).length;
   document.getElementById('nTODO').textContent=D.filter(i=>!stOf(i)).length;
   document.getElementById('nNOTE').textContent=D.filter(i=>noteOf(i)).length;
   document.getElementById('nRMOD').textContent=D.filter(i=>isRevMod(i)).length;
 
-  /* group */
   const g={};
   flt.forEach(it=>{
     if(!g[it.sectie]) g[it.sectie]={};
     if(!g[it.sectie][it.incapere]) g[it.sectie][it.incapere]=[];
     g[it.sectie][it.incapere].push(it);
   });
+
+  const srcTH = SRC_HIDDEN ? '' : '<th class="src-th">Sursă</th>';
 
   let h=''; let sIdx=0;
   for(const s in g){
@@ -343,13 +367,16 @@ function render(){
         <div class="inc-body ${COLLAPSE[iid]?'hidden':''}" id="b-${iid}">
         <table><thead><tr>
         <th style="width:78px">Status</th><th>Cod</th><th>Denumire</th><th style="text-align:center">Buc</th>
-        <th>Revit ✏️</th><th>Sursă</th><th>Instalații</th><th>Furnizor</th><th>Fișă</th><th style="min-width:180px">Observații + notițe</th><th></th>
+        <th>Revit ✏️</th>${srcTH}<th>Instalații</th><th>Furnizor</th><th>Fișă</th><th style="min-width:180px">Observații + notițe</th><th title="Click pe celulă pentru a marca/demarca RFI">RFI</th>
         </tr></thead><tbody>`;
       for(const it of iItems){
         const st=stOf(it);
         const note=noteOf(it);
         const rv=revitOf(it);
         const mod=isRevMod(it);
+        const rfi=rfiOf(it);
+        const rfiMod=isRfiMod(it);
+        const srcTD = SRC_HIDDEN ? '' : `<td class="src">${it.sursa}</td>`;
         h+=`<tr class="${st?'st-'+st:''}">
           <td><div class="stx">
             <button class="${st==='ok'?'ok':''}" onclick="setSt(${it.nr},'${st==='ok'?'':'ok'}')" title="OK">✓</button>
@@ -360,8 +387,8 @@ function render(){
           <td class="den">${it.den}</td>
           <td class="buc">${it.buc}</td>
           <td><span class="badge b-${rv.toLowerCase()} ${mod?'mod':''}" onclick="cycleRevit(${it.nr},'${it.revit}')"
-              title="Click pentru a schimba: DA → NU → VER${mod?' (modificat de tine — orig: '+it.revit+')':''}">${rv}${mod?'<span class="edit-hint">✏️</span>':''}</span></td>
-          <td class="src">${it.sursa}</td>
+              title="Click: DA → NU → VER${mod?' (modificat — orig: '+it.revit+')':''}">${rv}${mod?'<span class="edit-hint">✏️</span>':''}</span></td>
+          ${srcTD}
           <td class="inst">${it.inst||''}</td>
           <td style="font-size:11px">${it.furn||''}</td>
           <td class="fisa">${it.fisaUrl?`<a href="${it.fisaUrl}" target="_blank">PDF ↗</a>`:''}</td>
@@ -371,7 +398,10 @@ function render(){
               oninput="onNote(${it.nr},this.value);this.classList.toggle('has-note',!!this.value.trim())"
               onfocus="this.rows=3" onblur="this.rows=1">${note}</textarea>
           </td>
-          <td>${it.rfi?'<span class="rfi-flag" title="RFI deschis">⚠️</span>':''}</td>
+          <td class="rfi-cell" onclick="toggleRfi(${it.nr},${it.rfi})"
+              title="${rfi?'RFI activ — click pentru a-l elimina':'Click pentru a marca RFI'}">
+            <span class="${rfi?'rfi-on':'rfi-off'}">${rfi?'⚠️':'○'}</span>${rfiMod?'<span class="mod-dot">●</span>':''}
+          </td>
         </tr>`;
       }
       h+='</tbody></table></div>';
@@ -395,7 +425,7 @@ document.querySelectorAll('.fbtn').forEach(b=>{
 document.getElementById('q').oninput=e=>{ q=e.target.value.toLowerCase(); render() };
 
 function exportJSON(){
-  const blob=new Blob([JSON.stringify({status:ST,notes:NOTES,revit:RVOV,exported:new Date().toISOString()},null,1)],{type:'application/json'});
+  const blob=new Blob([JSON.stringify({status:ST,notes:NOTES,revit:RVOV,rfi:RFIOV,srcHidden:SRC_HIDDEN,exported:new Date().toISOString()},null,1)],{type:'application/json'});
   const a=document.createElement('a');
   a.href=URL.createObjectURL(blob);
   a.download='spital-brasov-backup.json'; a.click();
@@ -406,20 +436,28 @@ document.getElementById('fileIn').onchange=e=>{
   const r=new FileReader();
   r.onload=async()=>{ try{
     const o=JSON.parse(r.result);
-    ST=o.status||{}; NOTES=o.notes||{}; RVOV=o.revit||{};
-    await store.set(K_ST,ST); await store.set(K_NT,NOTES); await store.set(K_RV,RVOV);
+    ST=o.status||{}; NOTES=o.notes||{}; RVOV=o.revit||{}; RFIOV=o.rfi||{};
+    if(o.srcHidden!==undefined) SRC_HIDDEN=o.srcHidden;
+    await store.set(K_ST,ST); await store.set(K_NT,NOTES);
+    await store.set(K_RV,RVOV); await store.set(K_RF,RFIOV);
+    await store.set(K_UI,{h:SRC_HIDDEN});
     render();
     document.getElementById('saveMsg').textContent='Import reușit ✓';
   }catch(err){ alert('Fișier invalid') } };
   r.readAsText(f);
 };
 function exportCSV(){
-  let csv='Etaj;Nr;Cod;Sectie;Incapere;Denumire;Buc;Revit original;Revit curent;Status;Notite\n';
+  let hdr='Etaj;Nr;Cod;Sectie;Incapere;Denumire;Buc;Revit original;Revit curent;RFI;Status;Notite';
+  if(!SRC_HIDDEN) hdr+=';Sursa';
+  let csv=hdr+'\n';
   for(const fl of FLOORS){
     ALL[fl].forEach(it=>{
-      csv+=[fl,it.nr,it.cod,it.sectie,it.incapere,'"'+it.den+'"',it.buc,it.revit,revitOf(it),
+      let row=[fl,it.nr,it.cod,it.sectie,it.incapere,'"'+it.den+'"',it.buc,it.revit,revitOf(it),
+            rfiOf(it)?'DA':'',
             {'ok':'OK','ck':'DE VERIFICAT','px':'PROBLEMA'}[stOf(it)]||'',
-            '"'+(noteOf(it)||'').replace(/"/g,'""')+'"'].join(';')+'\n';
+            '"'+(noteOf(it)||'').replace(/"/g,'""')+'"'];
+      if(!SRC_HIDDEN) row.push('"'+it.sursa+'"');
+      csv+=row.join(';')+'\n';
     });
   }
   const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});
@@ -429,9 +467,12 @@ function exportCSV(){
 }
 
 (async()=>{
-  ST=await store.get(K_ST);
-  NOTES=await store.get(K_NT);
-  RVOV=await store.get(K_RV);
+  ST=await store.get(K_ST)||{};
+  NOTES=await store.get(K_NT)||{};
+  RVOV=await store.get(K_RV)||{};
+  RFIOV=await store.get(K_RF)||{};
+  const ui=await store.get(K_UI);
+  if(ui && ui.h!==undefined) SRC_HIDDEN=ui.h;
   render();
 })();
 </script>
